@@ -1,0 +1,59 @@
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/shopping
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    druid:
+      aop-patterns: com.example.bootdemo.*
+      filters: stat,wall
+      filter:
+        stat:
+          enabled: true
+        wall:
+          enabled: true
+          config:
+            drop-table-allow: false
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: admin
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+  jdbc:
+    template:
+      query-timeout: 3
+#  boot:
+#    admin:
+#      client:
+#        url: http://localhost:8888
+#        instance:
+#          prefer-ip: true # 不使用主机名，使用ip注册
+  application:
+    name: shoppingnet_backend
+  profiles:
+    # 表明当前应用是在生产环境还是测试环境，方便配置文件的便捷切换，其value值xxx取决于application-xxx.yaml,
+    # 默认配置文件（不带标识的）永远都会被加载，同名配置以带标识的配置文件优先
+    # 第二种方式 在cmd窗口启动打包程序时，使用java -jar xxx.jar --spring.profiles.active=xxx来修改要应用的配置文件环境（高优先级【11/14】）
+    active: test
+
+mybatis:
+  #  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+#    开启下划线（DB）与驼峰命名（POJO）匹配规则
+#    map-underscore-to-camel-case: true
+
+# actuator断点监控相关配置（可以搭配前端实现可视化监控）
+management:
+  endpoints:
+    enabled-by-default: true  # 默认开启所有监控端点
+    web:
+      exposure:
+        include: '*' # 将所有监控端点以web方式暴露（除health与info端点，默认端点只在JMX方式下暴露）
+  endpoint:
+    health:
+      show-details: always   # 显示health监控端点的详细信息
+server:
+  port: 9999
