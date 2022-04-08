@@ -23,7 +23,7 @@ public class JWTInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Map<String,Object> map = new HashMap<>();
         // 验证token信息
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
         if (token == null || token.equals("")) {
             response.sendError(401, "请先登录");
         }else{
