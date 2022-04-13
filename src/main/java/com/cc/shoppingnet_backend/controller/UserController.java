@@ -2,6 +2,7 @@ package com.cc.shoppingnet_backend.controller;
 
 import com.cc.shoppingnet_backend.pojo.StandardResp;
 import com.cc.shoppingnet_backend.pojo.User;
+import com.cc.shoppingnet_backend.pojo.query.UserQuery;
 import com.cc.shoppingnet_backend.service.UserService;
 import com.cc.shoppingnet_backend.utils.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;

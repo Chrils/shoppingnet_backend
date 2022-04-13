@@ -12,27 +12,33 @@ public class Menu {
 
     static {
         DEFAULT.menuItems = new MenuItem[] {
-            new MenuItem("1-1","首页", "/home",null),
-            new MenuItem("1-2","商品管理", "/goods",new MenuItem[] {
-                    new MenuItem("1-2-1","商品列表", "/goods/list",null),
-                    new MenuItem("1-2-2","添加商品", "/goods/add",null),
+            new MenuItem("1-1","首页", "/home","el-icon-s-home",new MenuItem[]{
+                    new MenuItem("1-1-1","回到首页","/home/backToHome","el-icon-menu",null)
             }),
-            new MenuItem("1-3","订单管理", "/order",new MenuItem[] {
-                    new MenuItem("1-3-1","订单列表", "/order/list",null),
-                    new MenuItem("1-3-2","添加订单", "/order/add",null),
+            new MenuItem("1-2","商品管理", "/goods","el-icon-s-goods",new MenuItem[] {
+                    new MenuItem("1-2-1","商品列表", "/goods/list","el-icon-menu",null),
+                    new MenuItem("1-2-2","添加商品", "/goods/add","el-icon-menu",null),
             }),
-            new MenuItem("1-4","用户管理", "/user",new MenuItem[] {
-                    new MenuItem("1-4-1","用户列表", "/user/list",null),
-                    new MenuItem("1-4-2","添加用户", "/user/add",null),
+            new MenuItem("1-3","订单管理", "/order","el-icon-s-order",new MenuItem[] {
+                    new MenuItem("1-3-1","订单列表", "/order/list","el-icon-menu",null),
+                    new MenuItem("1-3-2","添加订单", "/order/add","el-icon-menu",null),
             }),
-            new MenuItem("1-5","角色管理", "/role",new MenuItem[] {
-                    new MenuItem("1-5-1","角色列表", "/role/list",null),
-                    new MenuItem("1-5-2","添加角色", "/role/add",null),
+            new MenuItem("1-4","用户管理", "/user","el-icon-user-solid",new MenuItem[] {
+                    new MenuItem("1-4-1","用户列表", "/user/list","el-icon-menu",null),
+                    new MenuItem("1-4-2","添加用户", "/user/add","el-icon-menu",null),
             }),
-            new MenuItem("1-6","权限管理", "/permission",new MenuItem[] {
-                    new MenuItem("1-6-1","权限列表", "/permission/list",null),
-                    new MenuItem("1-6-2","添加权限", "/permission/add",null),
+            new MenuItem("1-5","角色管理", "/role","el-icon-s-custom",new MenuItem[] {
+                    new MenuItem("1-5-1","角色列表", "/role/list","el-icon-menu",null),
+                    new MenuItem("1-5-2","添加角色", "/role/add","el-icon-menu",null),
             }),
+            new MenuItem("1-6","权限管理", "/permission","el-icon-notebook-1",new MenuItem[] {
+                    new MenuItem("1-6-1","权限列表", "/permission/list","el-icon-menu",null),
+                    new MenuItem("1-6-2","添加权限", "/permission/add","el-icon-menu",null),
+            }),
+            new MenuItem("1-7","数据统计", "/data","el-icon-s-data",new MenuItem[] {
+                    new MenuItem("1-7-1","系统设置", "/data/setting","el-icon-menu",null),
+                    new MenuItem("1-7-2","系统日志", "/data/log","el-icon-menu",null),
+            })
         };
     }
 
@@ -44,6 +50,7 @@ public class Menu {
         private String id;
         private String name;
         private String url;
+        private String icon;
         private MenuItem[] children;
     }
 

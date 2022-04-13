@@ -43,7 +43,7 @@ mybatis:
   #  mapper-locations: classpath:/mapper/*.xml
   configuration:
 #    开启下划线（DB）与驼峰命名（POJO）匹配规则
-#    map-underscore-to-camel-case: true
+    mapUnderscoreToCamelCase: false
 
 # actuator断点监控相关配置（可以搭配前端实现可视化监控）
 management:
