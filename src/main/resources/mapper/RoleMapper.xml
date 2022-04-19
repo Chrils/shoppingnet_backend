@@ -4,13 +4,73 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cc.shoppingnet_backend.mapper.RoleMapper">
     <resultMap id="roleResultMap" type="com.cc.shoppingnet_backend.pojo.Role">
-        <id column="roleId" property="roleId"/>
-        <result column="roleName" property="roleName"/>
+        <id column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_desc" property="roleDesc"/>
     </resultMap>
+    <!-- 最终返回的结果集对象 -->
+    <resultMap id="RoleRightMap" type="com.cc.shoppingnet_backend.pojo.RoleRightInfo">
+        <id column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_desc" property="roleDesc"/>
+        <!-- column属性用于传参给select中的子查询方法 格式：当前map/继承map/上级查询 column名[=子查询参数名] -->
+        <collection property="rightTreeList" javaType="java.util.ArrayList" column="role_id"
+        select="getRight">
+        </collection>
+    </resultMap>
+    <!-- 返回结果中的rightTreeList属性结果集对象 -->
+    <resultMap id="ParentRight" type="com.cc.shoppingnet_backend.pojo.TRightTree">
+        <id column="right_id" property="rightId"/>
+        <result column="right_name" property="rightName"/>
+        <result column="right_url" property="rightUrl"/>
+        <result column="right_pid" property="rightPid"/>
+        <result column="right_level" property="rightLevel"/>
+        <result column="description" property="description"/>
+        <collection property="children" javaType="java.util.ArrayList"
+                    column="role_id=role_id,right_id=right_id"
+        select="getChildRight">
+        </collection>
+    </resultMap>
+    <!-- 删除roleId用户的rightId权限及其所有子权限的中间结果集 -->
+    <!-- 为指定roleId的角色添加rightIds里的所有权限 -->
+    <insert id="addRoleRight">
+        insert into mapping_role_right (role_id,right_id)
+        select #{roleId},right_id from t_right where right_id in
+        <foreach collection="rightIds" item="rightId" open="(" separator="," close=")">
+            #{rightId}
+        </foreach>
+    </insert>
+    <!-- 删除指定角色的指定权限，不删除子权限 -->
+    <delete id="deleteRoleRight">
+        DELETE FROM mapping_role_right WHERE role_id = #{roleId} and right_id = #{rightId}
+    </delete>
+    <!-- 删除指定角色的指定权限，删除子权限 -->
+
+    <!-- 删除指定角色的所有权限 -->
+    <delete id="deleteRoleRightByRoleId">
+        DELETE FROM mapping_role_right WHERE role_id = #{roleId}
+    </delete>
+    <!-- 查询角色下的所有权限及子权限 -->
+    <!-- 权限树查询根方法 -->
+    <select id="selectSubRight" resultMap="RoleRightMap">
+        SELECT * FROM role WHERE role_id = #{role_id}
+    </select>
+
+    <!-- 查询当前角色下所有的顶层权限 -->
+    <select id="getRight" resultMap="ParentRight">
+        select * from t_right left join mapping_role_right mrr on t_right.right_id = mrr.right_id
+        where mrr.role_id = #{role_id} and t_right.right_level = 1
+    </select>
+
+    <!-- 通过上一层的菜单编号查询该角色所有的子菜单 -->
+    <select id="getChildRight" resultMap="ParentRight">
+        select * from t_right left join mapping_role_right mrr on t_right.right_id = mrr.right_id
+        where mrr.role_id = #{role_id} and t_right.right_pid = #{right_id}
+    </select>
 
     <!-- 根据id查询role -->
     <select id="selectRoleByUserId" resultMap="roleResultMap">
-        select * from role where roleId = #{roleId}
+        select * from role where role_id = #{role_id}
     </select>
 
 </mapper>

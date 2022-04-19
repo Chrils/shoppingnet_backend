@@ -2,6 +2,7 @@ package com.cc.shoppingnet_backend.controller;
 
 import com.cc.shoppingnet_backend.CONST.menu.Menu;
 import com.cc.shoppingnet_backend.pojo.StandardResp;
+import com.cc.shoppingnet_backend.service.RightService;
 import com.cc.shoppingnet_backend.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class AdminBaseController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    RightService rightService;
 
     @GetMapping("/menus")
     public StandardResp menus() {
@@ -40,4 +44,17 @@ public class AdminBaseController {
         }
         return resp;
     }
+
+    @GetMapping("/rights")
+    public StandardResp rights() {
+        StandardResp resp;
+        try {
+            resp = StandardResp.getOKResp("获取权限成功");
+            resp.addData("rights",rightService.list());
+        }catch (Exception e) {
+            resp = StandardResp.getErrorResp("获取权限失败");
+        }
+        return resp;
+    }
+
 }

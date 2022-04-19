@@ -25,19 +25,14 @@ public class Menu {
             }),
             new MenuItem("1-4","用户管理", "/user","el-icon-user-solid",new MenuItem[] {
                     new MenuItem("1-4-1","用户列表", "/user/list","el-icon-menu",null),
-                    new MenuItem("1-4-2","添加用户", "/user/add","el-icon-menu",null),
             }),
-            new MenuItem("1-5","角色管理", "/role","el-icon-s-custom",new MenuItem[] {
-                    new MenuItem("1-5-1","角色列表", "/role/list","el-icon-menu",null),
-                    new MenuItem("1-5-2","添加角色", "/role/add","el-icon-menu",null),
+            new MenuItem("1-5","权限管理", "/rights","el-icon-notebook-1",new MenuItem[] {
+                    new MenuItem("1-5-1","权限列表", "/rights/list","el-icon-menu",null),
+                    new MenuItem("1-5-2","角色列表", "/roles/list","el-icon-menu",null),
             }),
-            new MenuItem("1-6","权限管理", "/permission","el-icon-notebook-1",new MenuItem[] {
-                    new MenuItem("1-6-1","权限列表", "/permission/list","el-icon-menu",null),
-                    new MenuItem("1-6-2","添加权限", "/permission/add","el-icon-menu",null),
-            }),
-            new MenuItem("1-7","数据统计", "/data","el-icon-s-data",new MenuItem[] {
-                    new MenuItem("1-7-1","系统设置", "/data/setting","el-icon-menu",null),
-                    new MenuItem("1-7-2","系统日志", "/data/log","el-icon-menu",null),
+            new MenuItem("1-6","数据统计", "/data","el-icon-s-data",new MenuItem[] {
+                    new MenuItem("1-6-1","系统设置", "/data/setting","el-icon-menu",null),
+                    new MenuItem("1-6-2","系统日志", "/data/log","el-icon-menu",null),
             })
         };
     }

@@ -56,4 +56,4 @@ management:
     health:
       show-details: always   # 显示health监控端点的详细信息
 server:
-  port: 9999
+  port: 9999 # 启动端口
