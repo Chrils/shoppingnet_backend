@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cc.shoppingnet_backend.mapper.RoleMapper;
 import com.cc.shoppingnet_backend.pojo.Role;
-import com.cc.shoppingnet_backend.pojo.RoleRightInfo;
+import com.cc.shoppingnet_backend.pojo.User;
+import com.cc.shoppingnet_backend.pojo.info.RoleRightInfo;
 import com.cc.shoppingnet_backend.pojo.TRight;
-import com.cc.shoppingnet_backend.pojo.TRightTree;
+import com.cc.shoppingnet_backend.pojo.tree.TRightTree;
 import com.cc.shoppingnet_backend.service.RoleService;
+import com.cc.shoppingnet_backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Autowired
     private RoleMapper roleMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public RoleRightInfo listRolesWithRight(Integer roleId) {
@@ -59,8 +64,17 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         roleMapper.addRoleRight(roleId, rightIds);
     }
 
+    /**
+     * 删除角色
+     * 当角色下有用户时，不允许删除
+     * @param roleId
+     */
     @Override
-    public void deleteRole(Integer roleId) {
+    public void deleteRole(Integer roleId) throws RuntimeException {
+        List<User> list = userService.list(new QueryWrapper<User>().eq("role_id", roleId));
+        if (list.size() > 0) {
+            throw new RuntimeException("当前角色下有用户，不允许删除");
+        }
         roleMapper.deleteRoleRightByRoleId(roleId);
         roleMapper.deleteById(roleId);
     }

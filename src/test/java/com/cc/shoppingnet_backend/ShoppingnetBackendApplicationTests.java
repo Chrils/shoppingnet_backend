@@ -1,12 +1,15 @@
 package com.cc.shoppingnet_backend;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cc.shoppingnet_backend.mapper.CateMapper;
 import com.cc.shoppingnet_backend.mapper.RoleMapper;
-import com.cc.shoppingnet_backend.pojo.RoleRightInfo;
+import com.cc.shoppingnet_backend.pojo.Cate;
 import com.cc.shoppingnet_backend.pojo.TRight;
-import com.cc.shoppingnet_backend.pojo.TRightTree;
+import com.cc.shoppingnet_backend.pojo.tree.CateTree;
+import com.cc.shoppingnet_backend.pojo.tree.TRightTree;
 import com.cc.shoppingnet_backend.pojo.User;
 import com.cc.shoppingnet_backend.pojo.query.UserQuery;
+import com.cc.shoppingnet_backend.service.CateService;
 import com.cc.shoppingnet_backend.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,12 @@ class ShoppingnetBackendApplicationTests {
 
     @Autowired
     RoleMapper mapper;
+
+    @Autowired
+    CateMapper cateMapper;
+
+    @Autowired
+    CateService cateService;
 
     @Test
     void contextLoads() {
@@ -54,7 +63,32 @@ class ShoppingnetBackendApplicationTests {
             for (TRight child : rightTree.getChildren()) {
                 System.out.println(child.getRightName());
             }
-        } }
+        }
+    }
+
+    @Test
+    void testCateMapper(){
+        List<CateTree> li = cateMapper.findCateByLevel(1,0,1);
+        for (CateTree cateTree : li) {
+            System.out.println(cateTree.getCateName());
+            if (cateTree.getChildren() != null) {
+                for (CateTree child : cateTree.getChildren()) {
+                    System.out.println(child.getCateName());
+                    if (child.getChildren() != null) {
+                        for (CateTree c : child.getChildren()) {
+                            System.out.println(c.getCateName());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    void testGoodsService(){
+        Page<CateTree> page = cateService.findByPage(1, 5, 3);
+        System.out.println(page.getRecords());
+    }
 
 
 

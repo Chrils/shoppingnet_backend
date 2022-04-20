@@ -1,5 +1,6 @@
-package com.cc.shoppingnet_backend.pojo;
+package com.cc.shoppingnet_backend.pojo.info;
 
+import com.cc.shoppingnet_backend.pojo.tree.TRightTree;
 import lombok.Data;
 
 import java.util.List;

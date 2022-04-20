@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.shoppingnet_backend.mapper.CateMapper">
+
+    <!-- 映射Cate对象的基本结果集 -->
+    <resultMap id="BaseResultMap" type="com.cc.shoppingnet_backend.pojo.Cate">
+        <id column="cate_id" property="cateId"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="cate_pid" property="catePid"/>
+        <result column="cate_level" property="cateLevel"/>
+        <result column="cate_deleted" property="cateDeleted"/>
+    </resultMap>
+
+    <resultMap id="ParentMap" type="com.cc.shoppingnet_backend.pojo.tree.CateTree">
+        <id column="cate_id" property="cateId"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="cate_pid" property="catePid"/>
+        <result column="cate_level" property="cateLevel"/>
+        <result column="cate_deleted" property="cateDeleted"/>
+        <collection property="children" javaType="java.util.List" column="cate_id" select="findChildren">
+            <id column="cate_id" property="cateId"/>
+            <result column="cate_name" property="cateName"/>
+            <result column="cate_pid" property="catePid"/>
+            <result column="cate_level" property="cateLevel"/>
+            <result column="cate_deleted" property="cateDeleted"/>
+        </collection>
+    </resultMap>
+
+    <!-- 查询前两级菜单的返回结果集 -->
+    <resultMap id="ParentMap2" type="com.cc.shoppingnet_backend.pojo.info.CateInfo">
+        <id column="cate_id" property="cateId"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="cate_pid" property="catePid"/>
+        <result column="cate_level" property="cateLevel"/>
+        <result column="cate_deleted" property="cateDeleted"/>
+        <collection property="children" javaType="java.util.List" column="cate_id" select="findChildren2">
+            <id column="cate_id" property="cateId"/>
+            <result column="cate_name" property="cateName"/>
+            <result column="cate_pid" property="catePid"/>
+            <result column="cate_level" property="cateLevel"/>
+            <result column="cate_deleted" property="cateDeleted"/>
+        </collection>
+    </resultMap>
+
+    <select id="findCateByLevel" resultMap="ParentMap">
+        SELECT * FROM cate WHERE cate_level = #{level} limit #{start},#{end}
+    </select>
+
+    <select id="findChildren" resultMap="ParentMap">
+        SELECT * FROM cate WHERE cate_pid = #{cate_id}
+    </select>
+
+    <select id="countByCateLevel" resultType="java.lang.Integer">
+        select count(*) from cate where cate_level = #{level}
+    </select>
+
+    <select id="findAll" resultMap="ParentMap2">
+        select * from cate where cate_level = 1
+    </select>
+
+    <select id="findChildren2" resultMap="BaseResultMap">
+        SELECT * FROM cate WHERE cate_pid = #{cate_id}
+    </select>
+
+</mapper>

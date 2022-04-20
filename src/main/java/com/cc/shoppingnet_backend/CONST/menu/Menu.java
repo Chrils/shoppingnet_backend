@@ -17,7 +17,7 @@ public class Menu {
             }),
             new MenuItem("1-2","商品管理", "/goods","el-icon-s-goods",new MenuItem[] {
                     new MenuItem("1-2-1","商品列表", "/goods/list","el-icon-menu",null),
-                    new MenuItem("1-2-2","添加商品", "/goods/add","el-icon-menu",null),
+                    new MenuItem("1-2-2","商品分类", "/goods/categories","el-icon-menu",null),
             }),
             new MenuItem("1-3","订单管理", "/order","el-icon-s-order",new MenuItem[] {
                     new MenuItem("1-3-1","订单列表", "/order/list","el-icon-menu",null),

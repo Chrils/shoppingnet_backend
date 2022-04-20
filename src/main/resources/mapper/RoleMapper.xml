@@ -9,7 +9,7 @@
         <result column="role_desc" property="roleDesc"/>
     </resultMap>
     <!-- 最终返回的结果集对象 -->
-    <resultMap id="RoleRightMap" type="com.cc.shoppingnet_backend.pojo.RoleRightInfo">
+    <resultMap id="RoleRightMap" type="com.cc.shoppingnet_backend.pojo.info.RoleRightInfo">
         <id column="role_id" property="roleId"/>
         <result column="role_name" property="roleName"/>
         <result column="role_desc" property="roleDesc"/>
@@ -19,7 +19,7 @@
         </collection>
     </resultMap>
     <!-- 返回结果中的rightTreeList属性结果集对象 -->
-    <resultMap id="ParentRight" type="com.cc.shoppingnet_backend.pojo.TRightTree">
+    <resultMap id="ParentRight" type="com.cc.shoppingnet_backend.pojo.tree.TRightTree">
         <id column="right_id" property="rightId"/>
         <result column="right_name" property="rightName"/>
         <result column="right_url" property="rightUrl"/>

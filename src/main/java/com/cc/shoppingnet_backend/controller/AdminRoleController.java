@@ -1,15 +1,11 @@
 package com.cc.shoppingnet_backend.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.cc.shoppingnet_backend.pojo.Role;
-import com.cc.shoppingnet_backend.pojo.RoleRightInfo;
+import com.cc.shoppingnet_backend.pojo.info.RoleRightInfo;
 import com.cc.shoppingnet_backend.pojo.StandardResp;
 import com.cc.shoppingnet_backend.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/admin/role")
@@ -57,7 +53,7 @@ public class AdminRoleController {
             //调用service删除
             service.deleteRole(roleId);
         }catch (Exception e){
-            resp = StandardResp.getErrorResp("删除角色失败");
+            resp = StandardResp.getErrorResp("删除角色失败,"+e.getMessage());
         }
         return resp;
     }

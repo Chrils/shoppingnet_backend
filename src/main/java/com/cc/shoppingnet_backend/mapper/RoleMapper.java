@@ -2,8 +2,8 @@ package com.cc.shoppingnet_backend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.cc.shoppingnet_backend.pojo.Role;
-import com.cc.shoppingnet_backend.pojo.RoleRightInfo;
-import com.cc.shoppingnet_backend.pojo.TRightTree;
+import com.cc.shoppingnet_backend.pojo.info.RoleRightInfo;
+import com.cc.shoppingnet_backend.pojo.tree.TRightTree;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
