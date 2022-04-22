@@ -4,9 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cc.shoppingnet_backend.mapper.CateMapper;
 import com.cc.shoppingnet_backend.pojo.Cate;
-import com.cc.shoppingnet_backend.pojo.info.CateInfo;
-import com.cc.shoppingnet_backend.pojo.query.CateQuery;
-import com.cc.shoppingnet_backend.pojo.tree.CateTree;
+import com.cc.shoppingnet_backend.pojo.temp.CateTemp;
+import com.cc.shoppingnet_backend.pojo.tree.CateTreeTemp;
 import com.cc.shoppingnet_backend.service.CateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,16 @@ public class CateServiceImpl extends ServiceImpl<CateMapper, Cate> implements Ca
     CateMapper mapper;
 
     /**
+     * 不分页获取所有分类，并带有子分类及筛选条件
+     * @param maxLevel
+     * @return
+     */
+    @Override
+    public List<CateTreeTemp> findWithOutPage(Integer maxLevel) {
+        return mapper.findCateByLevelWithoutPage(maxLevel);
+    }
+
+    /**
      * 树形分页查询所有分类 并带有子分类及筛选条件
      * @param page
      * @param size
@@ -26,8 +35,8 @@ public class CateServiceImpl extends ServiceImpl<CateMapper, Cate> implements Ca
      * @return
      */
     @Override
-    public Page<CateTree> findByPage(Integer page, Integer size, Integer maxLevel) {
-        Page<CateTree> pageInfo = new Page<>(page, size);
+    public Page<CateTreeTemp> findByPage(Integer page, Integer size, Integer maxLevel) {
+        Page<CateTreeTemp> pageInfo = new Page<>(page, size);
         Integer level = 3;
         if (maxLevel != null) {
             level = maxLevel;
@@ -39,6 +48,8 @@ public class CateServiceImpl extends ServiceImpl<CateMapper, Cate> implements Ca
         return pageInfo;
     }
 
+
+
     /**
      * 根据父级id级联删除当前分类及子分类
      * TODO 优化sql语句实现高更新效率
@@ -46,13 +57,13 @@ public class CateServiceImpl extends ServiceImpl<CateMapper, Cate> implements Ca
      */
     @Override
     public void deleteByIdCascaded(Integer id) {
-        List<CateTree> children = mapper.findChildren(id);
+        List<CateTreeTemp> children = mapper.findChildren(id);
         if (children != null && children.size() > 0) {
             //删除子分类
-            for (CateTree cateTree : children) {
+            for (CateTreeTemp cateTree : children) {
                 if (cateTree.getChildren() != null && cateTree.getChildren().size() > 0) {
                     //删除子分类的子分类
-                    for (CateTree cateTree1 : cateTree.getChildren()) {
+                    for (Cate cateTree1 : cateTree.getChildren()) {
                         mapper.deleteById(cateTree1.getCateId());
                     }
                 }
@@ -68,7 +79,7 @@ public class CateServiceImpl extends ServiceImpl<CateMapper, Cate> implements Ca
      * @return
      */
     @Override
-    public List<CateInfo> findAll() {
+    public List<CateTemp> findAll() {
         return mapper.findAll();
     }
 }

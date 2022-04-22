@@ -5,7 +5,7 @@ import com.cc.shoppingnet_backend.mapper.CateMapper;
 import com.cc.shoppingnet_backend.mapper.RoleMapper;
 import com.cc.shoppingnet_backend.pojo.Cate;
 import com.cc.shoppingnet_backend.pojo.TRight;
-import com.cc.shoppingnet_backend.pojo.tree.CateTree;
+import com.cc.shoppingnet_backend.pojo.tree.CateTreeTemp;
 import com.cc.shoppingnet_backend.pojo.tree.TRightTree;
 import com.cc.shoppingnet_backend.pojo.User;
 import com.cc.shoppingnet_backend.pojo.query.UserQuery;
@@ -68,14 +68,15 @@ class ShoppingnetBackendApplicationTests {
 
     @Test
     void testCateMapper(){
-        List<CateTree> li = cateMapper.findCateByLevel(1,0,1);
-        for (CateTree cateTree : li) {
+        List<CateTreeTemp> li = cateMapper.findCateByLevel(1,0,1);
+        for (CateTreeTemp cateTree : li) {
             System.out.println(cateTree.getCateName());
             if (cateTree.getChildren() != null) {
-                for (CateTree child : cateTree.getChildren()) {
+                for (Cate child : cateTree.getChildren()) {
                     System.out.println(child.getCateName());
-                    if (child.getChildren() != null) {
-                        for (CateTree c : child.getChildren()) {
+                    CateTreeTemp t = (CateTreeTemp) child;
+                    if (t.getChildren() != null) {
+                        for (Cate c : t.getChildren()) {
                             System.out.println(c.getCateName());
                         }
                     }
@@ -86,7 +87,7 @@ class ShoppingnetBackendApplicationTests {
 
     @Test
     void testGoodsService(){
-        Page<CateTree> page = cateService.findByPage(1, 5, 3);
+        Page<CateTreeTemp> page = cateService.findByPage(1, 5, 3);
         System.out.println(page.getRecords());
     }
 

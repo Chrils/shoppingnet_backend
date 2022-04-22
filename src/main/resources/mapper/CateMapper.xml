@@ -13,7 +13,7 @@
         <result column="cate_deleted" property="cateDeleted"/>
     </resultMap>
 
-    <resultMap id="ParentMap" type="com.cc.shoppingnet_backend.pojo.tree.CateTree">
+    <resultMap id="ParentMap" type="com.cc.shoppingnet_backend.pojo.tree.CateTreeTemp">
         <id column="cate_id" property="cateId"/>
         <result column="cate_name" property="cateName"/>
         <result column="cate_pid" property="catePid"/>
@@ -29,7 +29,7 @@
     </resultMap>
 
     <!-- 查询前两级菜单的返回结果集 -->
-    <resultMap id="ParentMap2" type="com.cc.shoppingnet_backend.pojo.info.CateInfo">
+    <resultMap id="ParentMap2" type="com.cc.shoppingnet_backend.pojo.temp.CateTemp">
         <id column="cate_id" property="cateId"/>
         <result column="cate_name" property="cateName"/>
         <result column="cate_pid" property="catePid"/>
@@ -44,8 +44,30 @@
         </collection>
     </resultMap>
 
+    <!-- 查询前两级菜单的返回结果集 -->
+    <resultMap id="ParentMap3" type="com.cc.shoppingnet_backend.pojo.temp.CateTemp">
+        <id column="cate_id" property="cateId"/>
+        <result column="cate_name" property="cateName"/>
+        <result column="cate_pid" property="catePid"/>
+        <result column="cate_level" property="cateLevel"/>
+        <result column="cate_deleted" property="cateDeleted"/>
+        <collection property="children" javaType="java.util.List" column="cate_id" select="findChildren3">
+            <id column="cate_id" property="cateId"/>
+            <result column="cate_name" property="cateName"/>
+            <result column="cate_pid" property="catePid"/>
+            <result column="cate_level" property="cateLevel"/>
+            <result column="cate_deleted" property="cateDeleted"/>
+        </collection>
+    </resultMap>
+
+    <!-- 分页获取指定level及以下的分类信息 -->
     <select id="findCateByLevel" resultMap="ParentMap">
         SELECT * FROM cate WHERE cate_level = #{level} limit #{start},#{end}
+    </select>
+
+    <!-- 不分页获取指定level及以下的分类信息 -->
+    <select id="findCateByLevelWithoutPage" resultMap="ParentMap3">
+        SELECT * FROM cate WHERE cate_level = #{level}
     </select>
 
     <select id="findChildren" resultMap="ParentMap">
@@ -61,6 +83,10 @@
     </select>
 
     <select id="findChildren2" resultMap="BaseResultMap">
+        SELECT * FROM cate WHERE cate_pid = #{cate_id}
+    </select>
+
+    <select id="findChildren3" resultMap="ParentMap2">
         SELECT * FROM cate WHERE cate_pid = #{cate_id}
     </select>
 
