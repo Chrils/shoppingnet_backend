@@ -91,6 +91,12 @@ class ShoppingnetBackendApplicationTests {
         System.out.println(page.getRecords());
     }
 
+    @Test
+    void testFindBottom(){
+        List<Integer> list = cateMapper.findBottomChildrenByCateId(19, 2);
+        System.out.println(list);
+    }
+
 
 
 

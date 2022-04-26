@@ -1,12 +1,19 @@
 package com.cc.shoppingnet_backend.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cc.shoppingnet_backend.mapper.AttributeMapper;
 import com.cc.shoppingnet_backend.mapper.CateMapper;
+import com.cc.shoppingnet_backend.mapper.GoodsMapper;
+import com.cc.shoppingnet_backend.pojo.Attribute;
 import com.cc.shoppingnet_backend.pojo.Cate;
+import com.cc.shoppingnet_backend.pojo.Goods;
 import com.cc.shoppingnet_backend.pojo.temp.CateTemp;
 import com.cc.shoppingnet_backend.pojo.tree.CateTreeTemp;
+import com.cc.shoppingnet_backend.service.AttributeService;
 import com.cc.shoppingnet_backend.service.CateService;
+import com.cc.shoppingnet_backend.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +23,12 @@ import java.util.List;
 public class CateServiceImpl extends ServiceImpl<CateMapper, Cate> implements CateService {
     @Autowired
     CateMapper mapper;
+
+    @Autowired
+    GoodsMapper goodsMapper;
+
+    @Autowired
+    AttributeMapper attributeMapper;
 
     /**
      * 不分页获取所有分类，并带有子分类及筛选条件
@@ -53,6 +66,7 @@ public class CateServiceImpl extends ServiceImpl<CateMapper, Cate> implements Ca
     /**
      * 根据父级id级联删除当前分类及子分类
      * TODO 优化sql语句实现高更新效率
+     * @Question 当子分类存在商品时不能删除 当子分类存在参数时，同时删除参数
      * @param id
      */
     @Override
@@ -64,13 +78,21 @@ public class CateServiceImpl extends ServiceImpl<CateMapper, Cate> implements Ca
                 if (cateTree.getChildren() != null && cateTree.getChildren().size() > 0) {
                     //删除子分类的子分类
                     for (Cate cateTree1 : cateTree.getChildren()) {
-                        mapper.deleteById(cateTree1.getCateId());
+                        delCalibrate(cateTree1.getCateId());
                     }
                 }
-                mapper.deleteById(cateTree.getCateId());
+                delCalibrate(cateTree.getCateId());
             }
         }
         //删除当前分类
+        delCalibrate(id);
+    }
+
+    private void delCalibrate(Integer id) {
+        if (goodsMapper.selectCount(new QueryWrapper<Goods>().eq("goods_cate", id)) > 0) {
+            throw new RuntimeException("当前分类存在商品，不能删除");
+        }
+        attributeMapper.delete(new QueryWrapper<Attribute>().eq("cate_id", id));
         mapper.deleteById(id);
     }
 
@@ -81,5 +103,10 @@ public class CateServiceImpl extends ServiceImpl<CateMapper, Cate> implements Ca
     @Override
     public List<CateTemp> findAll() {
         return mapper.findAll();
+    }
+
+    @Override
+    public List<Integer> findBottomChildrenByCateId(Integer cate_id, Integer cate_level) {
+        return mapper.findBottomChildrenByCateId(cate_id, cate_level);
     }
 }

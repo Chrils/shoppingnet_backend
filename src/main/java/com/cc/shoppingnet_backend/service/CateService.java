@@ -13,4 +13,5 @@ public interface CateService extends IService<Cate> {
     List<CateTemp> findAll();
     void deleteByIdCascaded(Integer id);
     List<CateTreeTemp> findWithOutPage(Integer maxLevel);
+    List<Integer> findBottomChildrenByCateId(Integer cate_id,Integer cate_level);
 }

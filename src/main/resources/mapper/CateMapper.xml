@@ -90,4 +90,22 @@
         SELECT * FROM cate WHERE cate_pid = #{cate_id}
     </select>
 
+    <!-- 查询当前类别下的所有第三级子菜单 -->
+    <select id="findBottomChildrenByCateId" resultType="Integer">
+        <choose>
+            <when test="cate_level == 3">
+                SELECT cate_id FROM cate WHERE cate_id = #{cate_id}
+            </when>
+            <when test="cate_level == 2">
+                SELECT cate_id FROM cate WHERE cate_pid = #{cate_id}
+            </when>
+            <when test="cate_level == 1">
+                SELECT cate_id FROM cate WHERE cate_pid in (SELECT cate_id FROM cate WHERE cate_pid = #{cate_id})
+            </when>
+            <otherwise>
+                SELECT cate_id FROM cate WHERE cate_level = 3
+            </otherwise>
+        </choose>
+    </select>
+
 </mapper>
