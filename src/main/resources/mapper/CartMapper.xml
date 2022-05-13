@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.shoppingnet_backend.mapper.CartMapper">
+
+    <resultMap id="CartItemResultMap" type="com.cc.shoppingnet_backend.pojo.item.CartItem">
+        <id property="itemId" column="item_id" />
+        <result property="itemGoodsName" column="item_goods_name" />
+        <result property="itemGoodsPrice" column="item_goods_price" />
+        <result property="itemGoodsCount" column="item_goods_count" />
+        <result property="itemGoodsImage" column="item_goods_image" />
+        <result property="itemGoodsId" column="item_goods_id" />
+        <result property="itemGoodsStock" column="item_goods_stock" />
+        <result property="itemTotal" column="item_total" />
+    </resultMap>
+
+    <resultMap id="CartResultMap" type="com.cc.shoppingnet_backend.pojo.Cart">
+        <id property="cartId" column="cart_id" />
+        <result property="cartUser" column="cart_user" />
+        <collection property="cartItems" javaType="java.util.List" column="cart_id" select="findCartItem">
+            <id property="itemId" column="item_id" />
+            <result property="itemGoodsName" column="item_goods_name" />
+            <result property="itemGoodsPrice" column="item_goods_price" />
+            <result property="itemGoodsCount" column="item_goods_count" />
+            <result property="itemGoodsImage" column="item_goods_image" />
+            <result property="itemGoodsId" column="item_goods_id" />
+            <result property="itemGoodsStock" column="item_goods_stock" />
+            <result property="itemTotal" column="item_total" />
+        </collection>
+    </resultMap>
+
+    <select id="findCartByUid" resultMap="CartResultMap">
+        select * from cart where cart_user = #{uid}
+    </select>
+
+    <select id="findCartItem" resultMap="CartItemResultMap">
+        SELECT * FROM cart_item WHERE item_cart = #{cart_id}
+    </select>
+
+</mapper>

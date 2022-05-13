@@ -11,11 +11,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         String[] excludePath = new String[]{
-             "/client/user/login",
-             "/client/user/register",
-             "/client/user/check",
-             "/images/**",
-             "/temp/**"
+                "/client/**",
+                "/images/**",
+                "/temp/**",
+                "/admin/goods/cate"
         };
         //添加JWTInterceptor拦截器
         registry.addInterceptor(new JWTInterceptor())

@@ -2,6 +2,7 @@ package com.cc.shoppingnet_backend.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.cc.shoppingnet_backend.annotation.StandardDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,4 +24,5 @@ public class Goods {
     private Date goodsCreate;
     private Integer goodsCate;
     private Double goodsWeight;
+    private Integer goodsSell;
 }

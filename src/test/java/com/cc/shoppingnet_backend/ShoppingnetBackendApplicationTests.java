@@ -3,12 +3,14 @@ package com.cc.shoppingnet_backend;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cc.shoppingnet_backend.mapper.CateMapper;
 import com.cc.shoppingnet_backend.mapper.RoleMapper;
+import com.cc.shoppingnet_backend.pojo.Cart;
 import com.cc.shoppingnet_backend.pojo.Cate;
 import com.cc.shoppingnet_backend.pojo.TRight;
 import com.cc.shoppingnet_backend.pojo.tree.CateTreeTemp;
 import com.cc.shoppingnet_backend.pojo.tree.TRightTree;
 import com.cc.shoppingnet_backend.pojo.User;
 import com.cc.shoppingnet_backend.pojo.query.UserQuery;
+import com.cc.shoppingnet_backend.service.CartService;
 import com.cc.shoppingnet_backend.service.CateService;
 import com.cc.shoppingnet_backend.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -31,6 +33,9 @@ class ShoppingnetBackendApplicationTests {
 
     @Autowired
     CateService cateService;
+
+    @Autowired
+    CartService cartService;
 
     @Test
     void contextLoads() {
@@ -95,6 +100,12 @@ class ShoppingnetBackendApplicationTests {
     void testFindBottom(){
         List<Integer> list = cateMapper.findBottomChildrenByCateId(19, 2);
         System.out.println(list);
+    }
+
+    @Test
+    void testCartService(){
+        Cart cart = cartService.findCartByUid(2);
+        System.out.println(cart);
     }
 
 

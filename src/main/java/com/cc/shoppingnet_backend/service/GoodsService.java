@@ -17,4 +17,10 @@ public interface GoodsService extends IService<Goods> {
 
     void updateGoodsInfo(GoodsAddInfo info);
     List<GoodsAddInfo.AttrItem> getGoodsAttributes(Integer id);
+
+    List<Goods> findBanner();
+
+    List<Goods> findHot();
+
+    List<Goods> findNew();
 }

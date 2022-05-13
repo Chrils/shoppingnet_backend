@@ -32,7 +32,7 @@ public class Menu {
                     new MenuItem("1-5-2","角色列表", "/roles/list","el-icon-menu",null),
             }),
             new MenuItem("1-6","数据统计", "/data","el-icon-s-data",new MenuItem[] {
-                    new MenuItem("1-6-1","系统设置", "/data/setting","el-icon-menu",null),
+                    new MenuItem("1-6-1","数据监控", "/data/stat","el-icon-menu",null),
                     new MenuItem("1-6-2","系统日志", "/data/log","el-icon-menu",null),
             })
         };

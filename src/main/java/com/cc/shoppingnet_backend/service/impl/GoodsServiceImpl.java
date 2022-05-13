@@ -29,6 +29,28 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Autowired
     private GoodsMapper goodsMapper;
+
+    @Override
+    public List<Goods> findBanner() {
+        return goodsMapper.selectList(new QueryWrapper<Goods>().eq("goods_cate",40));
+    }
+
+    @Override
+    public List<Goods> findHot() {
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("goods_sell");
+        wrapper.last("limit 0,8");
+        return goodsMapper.selectList(wrapper);
+    }
+
+    @Override
+    public List<Goods> findNew() {
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("goods_create");
+        wrapper.last("limit 0,8");
+        return goodsMapper.selectList(wrapper);
+    }
+
     @Autowired
     private CateService cateService;
 
@@ -188,7 +210,32 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         if(query.getEndTime()!=null){
             queryWrapper.le("goods_create",query.getEndTime());
         }
-        queryWrapper.orderByDesc("goods_create");
+        if(query.getMinPrice()!=null){
+            queryWrapper.ge("goods_price",query.getMinPrice());
+        }
+        if(query.getMaxPrice()!=null){
+            queryWrapper.le("goods_price",query.getMaxPrice());
+        }
+        if(query.getMinSell()!=null){
+            queryWrapper.ge("goods_sell",query.getMinSell());
+        }
+        if(query.getMaxSell()!=null){
+            queryWrapper.le("goods_sell",query.getMaxSell());
+        }
+        if(query.getPriceDesc()!=null){
+            if (query.getPriceDesc()) {
+                queryWrapper.orderByDesc("goods_price");
+            }else{
+                queryWrapper.orderByAsc("goods_price");
+            }
+        }
+        if(query.getSellDesc()!=null){
+            if (query.getSellDesc()) {
+                queryWrapper.orderByDesc("goods_sell");
+            }else {
+                queryWrapper.orderByAsc("goods_sell");
+            }
+        }
         return goodsMapper.selectPage(page1,queryWrapper);
     }
 
